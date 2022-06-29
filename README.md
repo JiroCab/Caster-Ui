@@ -1,28 +1,10 @@
-# Extended UI
+# Caster UI
 
-Mod for game mindustry that extend your ui with some useful things.
-
-You can easily disable any of the following features in the settings -> graphics -> extended UI if you don't like it.
-Some features is disabled by default. It'll not work if u doesn't enable it first.
-
-(if you have low fps with a large number of units, turn off health bars).
+A Mindustry Mod Aims to make the client a bit better for casting! - Using 'Ferlern/extended-UI' a base
 
 ## UI
 
 The main part of the modification. Works only on your client. Most of the features from here are enabled by default.
-
-### Schematics table
-
-Fast access to your schematics. Splitted into categories (first row of buttons).
-
-Configurable — right click (double tap on mobile)
-
-1. on label to set cathegory name.
-2. on cathegory button (first row) to set their image.
-3. on shematic button (all another) to set their image or shematic.
-4. u can also change amount of rows/columns or change button size on mod settings.
-
-![ucf-schematics](https://cdn.discordapp.com/attachments/606977691757051920/953003359235891263/unknown.png)![cf-schematics](https://cdn.discordapp.com/attachments/606977691757051920/953004472941027328/unknown.png)
 
 ### Units table
 
@@ -35,21 +17,8 @@ Also have some additional features:
 
 ![units-table](https://cdn.discordapp.com/attachments/606977691757051920/950541449554976788/unknown.png)
 
-### Power bar
 
-Shows global power status. Also makes warning about net separating
-
-![power-bar](https://cdn.discordapp.com/attachments/606977691757051920/950107054088015952/unknown.png)
-![power-warning](https://cdn.discordapp.com/attachments/606977691757051920/950106865902182480/unknown.png)
-
-### Testing (disabled by default)
-
-Shows buildings effectiveness for testing schemes (WIP)
-
-![buildings-effectiveness](https://cdn.discordapp.com/attachments/606977691757051920/954434576644731000/unknown.png)
-
-Shows which processor controls units for testing logic
-
+TODO:decide to keep and polish or discard
 ![logic-line](https://cdn.discordapp.com/attachments/606977691757051920/954039066305888326/unknown.png)
 
 ### Resource rate
@@ -61,10 +30,6 @@ Shows how much resources you produce
 ### Other
 
 Extends min and max zoom limits
-
-Saving schemes larger than 35x35. Works in observer mode
-
-Mine sand and other unmineble ores
 
 Factory progress bar
 
@@ -94,19 +59,3 @@ An additional part of the modification. Interacts with the game's API automatica
 All interactions use a general timer, configurable in the settings (500ms by default). Values ​​below **250ms** will often lead to temporary blocking from servers, so I don't recommend it.
 
 Completely disabled by default.
-
-### Auto fill bildings
-
-Automatically puts resources from your drone into buildings that:
-
-1. Can accept them
-2. Can use them (for example, generators, but not containers)
-
-If `Allow interact with core automatically` is enabled:
-
-1. Takes resources from cores if nearby buildings need them
-2. Puts resources back to core if they don't fit
-
-Everything is quite simple: for generators, the first suitable resource is selected (for example, coal for combustion), for turrets — best ammo, for everything else all's clear
-
-![0ms-abuse](https://cdn.discordapp.com/attachments/606977691757051920/961997293022744616/0ms_abuse.gif "0ms abuse")
