@@ -1,15 +1,13 @@
-const iterationTools = require("extended-ui/utils/iteration-tools");
-const relativeValue = require("extended-ui/utils/relative-value");
-const supportUnits = require("extended-ui/units/support-units");
-const coreUnits = require("extended-ui/units/core-units");
+const iterationTools = require("caster-ui/utils/iteration-tools");
+const relativeValue = require("caster-ui/utils/relative-value");
+const supportUnits = require("caster-ui/units/support-units");
+const coreUnits = require("caster-ui/units/core-units");
 
 exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits) {
     let unitsIterator = Groups.unit.iterator();
     let top = new Map();
 
     let unitCounter = (unit) => {
-        if (hideCoreUnits && coreUnits.includes(unit.type.toString())) return;
-        if (hideSupportUnits && supportUnits.includes(unit.type.toString())) return;
 
         let team = unit.team;
         let units;
@@ -48,7 +46,5 @@ exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits,
 
 exports.isDangerous = function(unit) {
     let type = unit.type.toString();
-    if (coreUnits.includes(type)) return false;
-    if (supportUnits.includes(type)) return false;
     return true;
 }

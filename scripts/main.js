@@ -1,12 +1,11 @@
 global.eui = {} // global mod object for fast access to important mod functions from console
-global.eui.relativeValue = require("extended-ui/utils/relative-value");
-global.eui.drawTasks = require("extended-ui/utils/draw/draw-tasks");
+global.eui.relativeValue = require("caster-ui/utils/relative-value");
+global.eui.drawTasks = require("caster-ui/utils/draw/draw-tasks");
 
-const output = require("extended-ui/utils/output-wrapper");
+const output = require("caster-ui/utils/output-wrapper");
 
 const modules = [
     "utils/polyfill",
-    "utils/event/drag",
     "utils/draw/build-plan",
 
     "ui/other/settings-ui",
@@ -24,7 +23,7 @@ const modules = [
 
 for (let module of modules) {
     try {
-        require("extended-ui/" + module);
+        require("caster-ui/" + module);
     } catch(e) {
         log("Extended UI: can't load " + module + "\nIn " + e.fileName + "#" + e.lineNumber + " " + e.name + ': ' + e.message);
         output.debug(Core.bundle.format("eui.load-error", module));

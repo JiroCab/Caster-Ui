@@ -1,5 +1,5 @@
-const unitsCounter = require("extended-ui/units/units-counter");
-const barBuilder = require("extended-ui/utils/draw/bar-builder");
+const unitsCounter = require("caster-ui/units/units-counter");
+const barBuilder = require("caster-ui/utils/draw/bar-builder");
 
 const granulatiry = 6;
 const maxToDisplay = 8;

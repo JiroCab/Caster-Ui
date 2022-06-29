@@ -1,5 +1,5 @@
-const Difference = require("extended-ui/utils/difference");
-const formattingUtil = require("extended-ui/utils/formatting");
+const Difference = require("caster-ui/utils/difference");
+const formattingUtil = require("caster-ui/utils/formatting");
 
 const diffs = {};
 

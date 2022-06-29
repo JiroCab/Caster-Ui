@@ -5,8 +5,9 @@ exports.drawCursor = function(player) {
     const cursorY = player.mouseY;
 
     Draw.draw(Layer.overlayUI+0.01, () => {
-        Drawf.square(build.x, build.y, build.block.size * tilesize / 2f + 1f, Pal.place);
+        Drawf.square(cursorX, cursorY, 1.5, player.team().color);
         Draw.alpha(0.7);
+        Draw.color();
         Draw.reset();
     });
 }
