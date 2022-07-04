@@ -1,5 +1,5 @@
-const settings = require("extended-ui/settings");
-const barBuilder = require("extended-ui/utils/draw/bar-builder");
+const settings = require("caster-ui/settings");
+const barBuilder = require("caster-ui/utils/draw/bar-builder");
 
 
 const factoryProgressBarSize = settings.factoryProgressBarSize;

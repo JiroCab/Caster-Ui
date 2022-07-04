@@ -1,4 +1,4 @@
-const formattingUtil = require("extended-ui/utils/formatting");
+const formattingUtil = require("caster-ui/utils/formatting");
 let contentTable;
 
 let hovered = null;

@@ -1,5 +1,5 @@
-const unitsCounter = require("extended-ui/units/units-counter");
-const barBuilder = require("extended-ui/utils/draw/bar-builder");
+const unitsCounter = require("caster-ui/units/units-counter");
+const barBuilder = require("caster-ui/utils/draw/bar-builder");
 
 const granulatiry = 6;
 const maxToDisplay = 8;
@@ -135,17 +135,6 @@ function buildTable() {
         unitsUiVisible = !unitsUiVisible;
     }).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
 
-    let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, () => {
-        hideCoreUnits = !hideCoreUnits;
-    }).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
-    imageButton.visibility = () => unitsUiVisible;
-    imageButton.resizeImage(buttonSize*0.6);
-
-    imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.github), Styles.defaulti, () => {
-        hideSupportUnits = !hideSupportUnits;
-    }).update(b => b.setChecked(hideSupportUnits)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip(Core.bundle.get("units-table.button.support-units.tooltip")).get();
-    imageButton.visibility = () => unitsUiVisible;
-    imageButton.resizeImage(buttonSize*0.6);
 
     contentTable.row();
 
@@ -165,12 +154,8 @@ function setMarker() {
 
     overlayMarker = Vars.ui.hudGroup.find("waves");
     overlayMarker.row();
-    contentTable = overlayMarker.table(contentTableStyle).update((t) => {
-        if (prevUnitsUiVisible != unitsUiVisible) {
-            t.setBackground(unitsUiVisible ? contentTableStyle : Styles.none);
-            prevUnitsUiVisible = unitsUiVisible;
-        }
-    }).name("unit-table").top().left().marginBottom(2).marginTop(2);
+    contentTable = overlayMarker.table(contentTableStyle).update((t) => {})
+    .name("unit-table").top().left().marginBottom(2).marginTop(2);
     contentTable = contentTable.get();
     contentTable.visibility = () => isBuilded && Boolean(amountToDisplay); // Boolean really neccessary
 }
