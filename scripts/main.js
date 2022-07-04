@@ -13,7 +13,6 @@ const modules = [
 
     "ui/blocks/block-info-ui",
     "ui/blocks/progress-bar",
-    "ui/blocks/efficiency",
 
     "ui/units/units-table-ui",
     "ui/units/draw-cycle",

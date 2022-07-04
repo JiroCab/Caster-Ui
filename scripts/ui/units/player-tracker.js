@@ -7,7 +7,6 @@ exports.drawCursor = function(player) {
     Draw.draw(Layer.overlayUI+0.01, () => {
         Drawf.square(cursorX, cursorY, 1.5, player.team().color);
         Draw.alpha(0.7);
-        Draw.color();
         Draw.reset();
     });
 }
