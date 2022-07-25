@@ -1,5 +1,5 @@
 Events.on(EventType.ClientLoadEvent, () => {
-    const settings = Vars.ui.settings.graphics;
+    const settings = Vars.ui.settings.game;
     settings.row();
     settings.button(Core.bundle.get("eui.name"), Styles.defaultt, () => extendedUIDialogSettings.show()).width(240).height(50);
 
