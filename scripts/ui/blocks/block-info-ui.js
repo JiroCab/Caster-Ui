@@ -10,7 +10,7 @@ Events.on(ClientLoadEvent, () => {
     Vars.ui.hudGroup.fill(null, t => {
         contentTable = t.table(Styles.black3).margin(4).get();
         contentTable.visibility = () => infoTableVisibility();
-        t.bottom().left();
+        t.center().left();
         t.pack();
     });
 })
@@ -95,6 +95,7 @@ function buildTable(build) {
     if (![displayPower, displayItems, displayConfig].includes(true)) return;
 
     if (displayPower) {
+        //getBlockName();
         const powerTable = contentTable.table().get();
         const graph = build.power.graph;
 
@@ -138,4 +139,9 @@ function buildTable(build) {
 
 function infoTableVisibility() {
     return Vars.ui.hudfrag.shown && isBuilded;
+}
+
+function getBlockName{
+	return info.add("[#" + enemy.team.color + "]" + (block ? block.localizedName :
+		player ? player.name : unit.localizedName)).padLeft(5).row();
 }
