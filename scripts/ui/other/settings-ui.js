@@ -24,8 +24,8 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-TrackPlayerCursor", false);
         contentTable.checkPref("eui-TrackLogicControl", false);
         contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);
-        contentTable.checkPref("eui-ShowAlerts", false);
-        contentTable.checkPref("eui-ShowAlertsCircles", false);
+        contentTable.checkPref("eui-ShowAlerts", true);
+        contentTable.checkPref("eui-ShowAlertsCircles", true);
 
 
         return contentTable;

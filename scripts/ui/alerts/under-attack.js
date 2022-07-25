@@ -13,11 +13,11 @@ Events.on(EventType.BlockDestroyEvent, cons(e => {
 
 		 if(tile.team() == Team.sharded) {
 	       output.ingameAlert(Core.bundle.get("alerts.yellow"),
-	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.yellow}));
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.gold}));
 	    }
 	     if(tile.team() == Team.crux) {
 	       output.ingameAlert(Core.bundle.get("alerts.red"),
-	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.red}));
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.scarlet}));
 	     }
 	     if(tile.team() == Team.purple ) {
 	       output.ingameAlert(Core.bundle.get("alerts.purple"),
