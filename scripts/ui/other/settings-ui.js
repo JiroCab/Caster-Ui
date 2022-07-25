@@ -2,7 +2,7 @@ Events.on(EventType.ClientLoadEvent, () => {
     const settings = Vars.ui.settings.graphics;
     settings.row();
     settings.button(Core.bundle.get("eui.name"), Styles.defaultt, () => extendedUIDialogSettings.show()).width(240).height(50);
-    
+
     const extendedUIDialogSettings = new BaseDialog(Core.bundle.get("eui.settings"));
     extendedUIDialogSettings.addCloseButton();
     extendedUIDialogSettings.buttons.defaults().size(240, 60);
@@ -24,6 +24,9 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-TrackPlayerCursor", false);
         contentTable.checkPref("eui-TrackLogicControl", false);
         contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);
+        contentTable.checkPref("eui-ShowAlerts", false);
+        contentTable.checkPref("eui-ShowAlertsCircles", false);
+
 
         return contentTable;
     })());

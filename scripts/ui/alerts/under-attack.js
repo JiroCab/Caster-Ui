@@ -1,31 +1,43 @@
 const Alerts = require("caster-ui/ui/alerts/alert");
 const output = require("caster-ui/utils/output-wrapper");
-const coreBlocks = require("caster-ui/blocks/core-blocks");
+const drawTasks = require("caster-ui/utils/draw/draw-tasks");
+const coreList = require("caster-ui/ui/blocks/core-blocks");
 
-const maxTime = 60*300 // 5 min;
+var inConstruction = new Seq();
 
-let sended;
-let timer;
+var queue = new Seq();
 
-Events.on(EventType.WorldLoadEvent, () => {
-    sended = false;
-    timer = Time.time;
-});
+Events.on(EventType.BlockDestroyEvent, cons(e => {
+	var tile = e.tile;
+	if(tile.build instanceof CoreBlock.CoreBuild) {
 
-let event = (event) => {
-    const unit = event.block;
-    if (sended || !coreBlocks)) return;
-    if (Time.time - timer < maxTime) {
-        output.ingameAlert(Core.bundle.get("alerts.core-lost"));
-        sended = true;
+		 if(tile.team() == Team.sharded) {
+	       output.ingameAlert(Core.bundle.get("alerts.yellow"),
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.yellow}));
+	    }
+	     if(tile.team() == Team.crux) {
+	       output.ingameAlert(Core.bundle.get("alerts.red"),
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.red}));
+	     }
+	     if(tile.team() == Team.purple ) {
+	       output.ingameAlert(Core.bundle.get("alerts.purple"),
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.purple}));
+	     }
+	     if(tile.team() == Team.green) {
+	       output.ingameAlert(Core.bundle.get("alerts.green"),
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.green}));
+	     }
+	     if(tile.team() == Team.blue) {
+	       output.ingameAlert(Core.bundle.get("alerts.blue"),
+	       drawTasks.divergingCircles(tile.build.x, tile.build.y, {color: Color.blue}));
+	     }
+
+
+
+
     }
-}
+   }
+  )
+ );
 
-new Alerts.BaseAlert(
-    () => {
-        Events.on(UnitDestroyEvent, event);
-    },
-    () => {
-        Events.remove(UnitDestroyEvent, event);
-    }
-)
+

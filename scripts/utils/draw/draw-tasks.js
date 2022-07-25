@@ -4,10 +4,13 @@ exports.divergingCircles = (x, y, parameters) => {
     const startRadius = parameters.startRadius || 0;
     const color = parameters.color;
     const growSpeed = parameters.growSpeed || 1;
-    const circlesAmount = parameters.circlesAmount || 3;
+    const circlesAmount = parameters.circlesAmount || 1;
 
     let radius = startRadius;
     let startTime = Time.time;
+
+    if (!Core.settings.getBool("eui-ShowAlertsCircles", true)) return;
+
     tasks.push(() => {
         Draw.color(color);
         for (let i = 0; i < circlesAmount; i++) {

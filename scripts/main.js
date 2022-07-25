@@ -14,6 +14,8 @@ const modules = [
     "ui/blocks/block-info-ui",
     "ui/blocks/progress-bar",
 
+    "ui/alerts/under-attack",
+
     "ui/units/units-table-ui",
     "ui/units/draw-cycle",
 
