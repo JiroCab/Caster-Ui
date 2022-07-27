@@ -6,7 +6,6 @@ const output = require("caster-ui/utils/output-wrapper");
 
 const modules = [
     "utils/polyfill",
-    "utils/draw/build-plan",
 
     "ui/other/settings-ui",
     "ui/other/resource-rate-ui",
