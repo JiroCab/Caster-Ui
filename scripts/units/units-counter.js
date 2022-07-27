@@ -3,7 +3,7 @@ const relativeValue = require("caster-ui/utils/relative-value");
 const supportUnits = require("caster-ui/units/support-units");
 const coreUnits = require("caster-ui/units/core-units");
 
-exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits, hideSupportUnits) {
+exports.getUnitsValueTop = function(amountToDisplay, granulatiry) {
     let unitsIterator = Groups.unit.iterator();
     let top = new Map();
 

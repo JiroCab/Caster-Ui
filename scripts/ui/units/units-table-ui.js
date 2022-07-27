@@ -6,8 +6,6 @@ const maxToDisplay = 8;
 
 let prevUnitsUiVisible = true;
 let unitsUiVisible = true;
-let hideCoreUnits = false;
-let hideSupportUnits = false;
 let isBuilded = false;
 let holdedEntity = null;
 let hoveredEntity = null;
@@ -38,7 +36,7 @@ Events.run(Trigger.update, () => {
     if (timer - 500 < updateTimer) return;
     updateTimer = timer;
 
-    const unitsValueTop = unitsCounter.getUnitsValueTop(maxToDisplay, granulatiry, hideCoreUnits, hideSupportUnits);
+    const unitsValueTop = unitsCounter.getUnitsValueTop(maxToDisplay, granulatiry);
     amountToDisplay = unitsValueTop.length;
 
     if (isRebuildNeeded()) {
@@ -154,8 +152,12 @@ function setMarker() {
 
     overlayMarker = Vars.ui.hudGroup.find("waves");
     overlayMarker.row();
-    contentTable = overlayMarker.table(contentTableStyle).update((t) => {})
-    .name("unit-table").top().left().marginBottom(2).marginTop(2);
+    contentTable = overlayMarker.table(contentTableStyle).update((t) => {
+        if (prevUnitsUiVisible != unitsUiVisible) {
+            t.setBackground(unitsUiVisible ? contentTableStyle : Styles.none);
+            prevUnitsUiVisible = unitsUiVisible;
+        }
+    }).name("unit-table").top().left().marginBottom(2).marginTop(2);
     contentTable = contentTable.get();
     contentTable.visibility = () => isBuilded && Boolean(amountToDisplay); // Boolean really neccessary
 }

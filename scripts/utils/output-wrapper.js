@@ -77,7 +77,7 @@ function showToast(icon, text){
 
     if (Core.settings.getBool("eui-AlertsUseBottom", true)) {
            container.setTranslation(0, -table.getMarginBottom() * 4.2);
-           Vars.state.isMenu() ? container.bottom().right().add(table) : container.bottom().add(table);
+           Vars.state.isMenu() ? container.bottom().left().add(table) : container.bottom().center().add(table);
            container.actions(
                  Actions.translateBy(0, table.getMarginBottom() * 3.7, 1, Interp.fade),
                  Actions.delay(2),
@@ -88,7 +88,7 @@ function showToast(icon, text){
     );
     }
     else { container.setTranslation(0, table.getPrefHeight());
-           Vars.state.isMenu() ? container.top().right().add(table) : container.top().add(table);
+           Vars.state.isMenu() ? container.top().left().add(table) : container.top().center().add(table);
            container.actions(
                  Actions.translateBy(0, -table.getPrefHeight(), 1, Interp.fade),
                  Actions.delay(2),
