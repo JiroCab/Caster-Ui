@@ -29,11 +29,11 @@ Events.on(EventType.BlockDestroyEvent, cons(e => {
        }
 
        if(Core.settings.getBool("eui-SendChatCoreLost", true) ){
- 	     if(tile.team() == Team.sharded) {Call.sendChatMessage("[gold]Sharded[] Core Lost!");}
- 	     if(tile.team() == Team.crux) {Call.sendChatMessage("[scarlet]Crux[] Core Lost!");}
- 	     if(tile.team() == Team.purple) {Call.sendChatMessage("[green]Green[] Core Lost!");}
- 	     if(tile.team() == Team.green) {Call.sendChatMessage("[purple]Malis[] Core Lost!");}
- 	     if(tile.team() == Team.blue) {Call.sendChatMessage("[blue]Blue[] Core Lost!");}
+ 	     if(tile.team() == Team.sharded) {Call.sendChatMessage("[gold]Sharded[] Core Destroyed!");}
+ 	     if(tile.team() == Team.crux) {Call.sendChatMessage("[scarlet]Crux[] Core Destroyed!");}
+ 	     if(tile.team() == Team.purple) {Call.sendChatMessage("[green]Green[] Core Destroyed!");}
+ 	     if(tile.team() == Team.green) {Call.sendChatMessage("[purple]Malis[] Core Destroyed!");}
+ 	     if(tile.team() == Team.blue) {Call.sendChatMessage("[blue]Blue[] Core Destroyed!");}
        }
     }
    }
