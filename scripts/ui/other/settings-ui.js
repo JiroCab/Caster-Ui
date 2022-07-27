@@ -26,6 +26,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);
         contentTable.checkPref("eui-ShowAlerts", true);
         contentTable.checkPref("eui-ShowAlertsCircles", true);
+        contentTable.checkPref("eui-SendChatCoreLost", false);
 
 
         return contentTable;
