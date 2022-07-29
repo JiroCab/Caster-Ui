@@ -9,6 +9,16 @@ exports.powerToString = function(currentNetPower, graphs) {
     return color + sign + powerString + '[white]' + graphString;
 }
 
+exports.healthToString = function(currentHp, maxHp, graphs) {
+    let rHp = Math.round(currentHp);
+    let rMhp = Math.round(maxHp);
+
+    let heathstring = exports.numberToString(rHp, 1);
+    let maxheathstring = exports.numberToString(rMhp, 1);
+
+    return '[pink]' + heathstring + '[]/[red]' + maxheathstring;
+}
+
 exports.numberToString = function(num, triplets) {
     triplets = triplets || 0;
     let power = Math.floor(Math.log(Math.abs(num)) / Math.log(1000)) - triplets;

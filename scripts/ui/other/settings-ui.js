@@ -21,6 +21,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-ShowUnitTable", true);
         contentTable.checkPref("eui-ShowBlockInfo", true);
         contentTable.checkPref("eui-ShowResourceRate", false);
+        contentTable.checkPref("eui-ShowBlockHealth", true);
         contentTable.checkPref("eui-TrackPlayerCursor", false);
         contentTable.checkPref("eui-TrackLogicControl", false);
         contentTable.sliderPref("eui-maxZoom", 10, 1, 10, 1, i => i);

@@ -88,11 +88,24 @@ function clearTable() {
 function buildTable(build) {
     const power = build.power;
     const items = build.items;
+    const health = build.health;
     const config = build.config();
     const displayPower = power && !isPlayerTeam;
     const displayItems = items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 50);
+    const displayHealth = health && Core.settings.getBool("eui-ShowBlockHealth", true);
     const displayConfig = typeof config == "string" && !isPlayerTeam;
     if (![displayPower, displayItems, displayConfig].includes(true)) return;
+
+    if (displayHealth) { //the less cool deltanedas/waisa
+        const healthTable = contentTable.table().get();
+        const currentHealth = build.health;
+        const maxHealth = build.maxHealth;
+
+        healthTable.label(() => {
+            return Core.bundle.get("block-info.health") + ": " + formattingUtil.healthToString(currentHealth, maxHealth, []);
+        })
+        contentTable.row();
+    }
 
     if (displayPower) {
         const powerTable = contentTable.table().get();
