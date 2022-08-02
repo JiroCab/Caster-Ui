@@ -3,12 +3,12 @@ const relativeValue = require("caster-ui/utils/relative-value");
 const supportUnits = require("caster-ui/units/support-units");
 const coreUnits = require("caster-ui/units/core-units");
 
-exports.getUnitsValueTop = function(amountToDisplay, granulatiry) {
+exports.getUnitsValueTop = function(amountToDisplay, granulatiry, hideCoreUnits) {
     let unitsIterator = Groups.unit.iterator();
     let top = new Map();
 
     let unitCounter = (unit) => {
-
+        if (hideCoreUnits && coreUnits.includes(unit.type.toString())) return;
         let team = unit.team;
         let units;
 
@@ -46,5 +46,6 @@ exports.getUnitsValueTop = function(amountToDisplay, granulatiry) {
 
 exports.isDangerous = function(unit) {
     let type = unit.type.toString();
+    if (coreUnits.includes(type)) return false;
     return true;
 }

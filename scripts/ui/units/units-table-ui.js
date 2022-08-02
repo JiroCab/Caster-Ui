@@ -6,11 +6,13 @@ const maxToDisplay = 8;
 
 let prevUnitsUiVisible = true;
 let unitsUiVisible = true;
+let hideCoreUnits = false;
 let isBuilded = false;
 let holdedEntity = null;
 let hoveredEntity = null;
 let amountToDisplay = 0;
 let updateTimer = Date.now();
+let plist = null
 
 let overlayMarker;
 let contentTable;
@@ -36,7 +38,8 @@ Events.run(Trigger.update, () => {
     if (timer - 500 < updateTimer) return;
     updateTimer = timer;
 
-    const unitsValueTop = unitsCounter.getUnitsValueTop(maxToDisplay, granulatiry);
+    const unitsValueTop = unitsCounter.getUnitsValueTop (maxToDisplay, granulatiry, hideCoreUnits);
+    const playersList = unitsCounter.getPlayersList (hideCoreUnits);
     amountToDisplay = unitsValueTop.length;
 
     if (isRebuildNeeded()) {
@@ -125,7 +128,7 @@ function clearTable() {
 }
 
 function buildTable() {
-    const buttonSize = 40;
+    const buttonSize = 35;
 
     let unitTableButtons = contentTable.table().top().left().margin(3).get();
 
@@ -133,6 +136,11 @@ function buildTable() {
         unitsUiVisible = !unitsUiVisible;
     }).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
 
+    let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, () => {
+        hideCoreUnits = !hideCoreUnits;
+    }).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
+    imageButton.visibility = () => unitsUiVisible;
+    imageButton.resizeImage(buttonSize*0.6);
 
     contentTable.row();
 
