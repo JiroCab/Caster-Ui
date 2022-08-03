@@ -39,7 +39,6 @@ Events.run(Trigger.update, () => {
     updateTimer = timer;
 
     const unitsValueTop = unitsCounter.getUnitsValueTop (maxToDisplay, granulatiry, hideCoreUnits);
-    const playersList = unitsCounter.getPlayersList (hideCoreUnits);
     amountToDisplay = unitsValueTop.length;
 
     if (isRebuildNeeded()) {

@@ -94,7 +94,7 @@ function buildTable(build) {
     const displayItems = items && build.items.total() > 0 && (!isPlayerTeam || build.items.total() <= 50);
     const displayHealth = health && Core.settings.getBool("eui-ShowBlockHealth", true);
     const displayConfig = typeof config == "string" && !isPlayerTeam;
-    if (![displayPower, displayItems, displayConfig].includes(true)) return;
+    if (![displayPower, displayItems, displayConfig, displayHealth].includes(true)) return;
 
     if (displayHealth) { //the less cool deltanedas/waisa
         const healthTable = contentTable.table().get();
