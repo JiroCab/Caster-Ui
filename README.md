@@ -27,7 +27,7 @@ Composed of three parts, which can be individually turned off:
 
 ![Core-Lost-Notification](https://user-images.githubusercontent.com/57391931/180737689-a11c7c35-9cae-4c49-8681-2ee338827b68.gif)
 
-### - Tracks other players cursor
+### - Tracks other players' cursor
 - 7 Cursor types, use the slider in the settings to change it
 - Client's Mouse can also be show for cases where system curser does not show and use this as a backup 
 ![Mouse Cursors](https://user-images.githubusercontent.com/57391931/183559978-f4bf81ae-b57d-44d0-b911-6b5ec15e2811.png)
@@ -46,6 +46,7 @@ Composed of three parts, which can be individually turned off:
 
 ### - Resource rate *
 - Shows how much resources your current produces - Best paired with a team changer mod to look at other teams' income
+
 ![rate](https://cdn.discordapp.com/attachments/606977691757051920/989816706987876432/EpicPen_jJO6PgFNf1.png)
 
 ### - logic Tracker *
