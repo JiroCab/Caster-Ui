@@ -2,7 +2,7 @@ name: "caster-ui"
 displayName: "[orange]Caster[gold] UI"
 author: "RushieWashie, wizer"
 description: "(Wip) Mod Aims to make the client a bit better for casting! \n\nUsing [scarlet]'Ferlern/caster-ui'[][red] (INCOMPATIBLE)[] as a base."
-version: "0.5"
+version: "0.6"
 minGameVersion: 120
 hidden: true
 
