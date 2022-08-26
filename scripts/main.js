@@ -26,6 +26,10 @@ for (let module of modules) {
         require("caster-ui/" + module);
     } catch(e) {
         log("Extended UI: can't load " + module + "\nIn " + e.fileName + "#" + e.lineNumber + " " + e.name + ': ' + e.message);
-        output.debug(Core.bundle.format("eui.load-error", module));
+        output.debug(Core.bundle.format("eui.load-error", module, e.fileName, e.lineNumber, e.name, e.message));
+        Events.on(EventType.PlayerJoin, () => {
+            output.debug(Core.bundle.format("eui.load-error", module, e.fileName, e.lineNumber, e.name, e.message));
+        });
+        //looking on the console is tedious
     }
 }

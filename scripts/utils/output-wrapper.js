@@ -1,5 +1,5 @@
 exports.debug = function(text) {
-    let properties = {showTime: 10};
+    let properties = {showTime: 60};
     exports.addInQueue(() => (Vars.ui.announce(text, 10)), properties);
 }
 

@@ -19,6 +19,7 @@ Events.on(EventType.ClientLoadEvent, () => {
         contentTable.checkPref("eui-showPowerBar", true);
         contentTable.checkPref("eui-showFactoryProgress", true);
         contentTable.checkPref("eui-ShowUnitTable", true);
+        contentTable.checkPref("eui-ShowPlayerList", true);
         contentTable.checkPref("eui-showUnitBar", true);
         contentTable.checkPref("eui-ShowBlockInfo", true);
         contentTable.checkPref("eui-ShowResourceRate", false);

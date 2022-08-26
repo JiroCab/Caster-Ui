@@ -13,10 +13,10 @@ exports.healthToString = function(currentHp, maxHp, graphs) {
     let rHp = Math.round(currentHp);
     let rMhp = Math.round(maxHp);
 
-    let heathstring = exports.numberToString(rHp, 1);
-    let maxheathstring = exports.numberToString(rMhp, 1);
+    let heathString = exports.numberToString(rHp, 1);
+    let maxHeathString = exports.numberToString(rMhp, 1);
 
-    return '[pink]' + heathstring + '[]/[red]' + maxheathstring;
+    return '[pink]' + heathString + '[]/[red]' + maxHeathString;
 }
 
 exports.numberToString = function(num, triplets) {
