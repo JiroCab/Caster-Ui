@@ -1,5 +1,5 @@
 exports.drawCursor = function(player) {
-    //For Casters who's set up dont show the mouse at all or properly
+    //For Casters who's set up don't show the mouse at all or properly
     if (player == Vars.player && !Core.settings.getBool("eui-ShowOwnCursor", true)) return;
 
     const cursorX = player.mouseX;

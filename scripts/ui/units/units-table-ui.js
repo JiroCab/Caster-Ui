@@ -7,14 +7,18 @@ const maxToDisplay = 8;
 let prevUnitsUiVisible = true;
 let unitsUiVisible = true;
 let hideCoreUnits = false;
-let hidePlayerList = false;
+let showUnitsList = true;
+let showPlayerList = true;
+let compactPlayerList = false;
 let isBuilded = false;
 let holdedEntity = null;
 let hoveredEntity = null;
 let hoveredPlayer = null;
 let amountToDisplay = 0;
 let updateTimer = Date.now();
-let plist = null
+let optionChecker = 0;
+let prevOptionChecker = 0;
+let prevInput = null;
 
 let overlayMarker;
 let contentTable;
@@ -22,18 +26,38 @@ let unitTable;
 let playerTable;
 
 Events.run(Trigger.update, () => {
-    if (!Core.settings.getBool("eui-ShowUnitTable", true)) {
+    if (!Core.settings.getBool("eui-ShowUnitTable", true) && !Core.settings.getBool("eui-ShowPlayerList", true)) {
         if (isBuilded) {
             clearTable();
         }
         hoveredEntity = null;
+        hoveredPlayer = null;
         return;
     }
 
     if (hoveredEntity && !contentTable.hasMouse()) hoveredEntity = null;
+    if (hoveredPlayer && !contentTable.hasMouse()) hoveredPlayer = null;
 
     if (!overlayMarker) {
         setMarker();
+    }
+
+    if (Core.settings.getBool("eui-ShowPlayerList", false)) {
+        let player
+        let input = Vars.control.input;
+
+        if (hoveredPlayer && !hoveredPlayer.dead){
+            player = hoveredPlayer;
+            if (!prevInput && !Vars.mobile){
+                prevInput = input.panning;
+                input.panning = true;
+            }
+            Core.camera.position.set(player);
+        }
+        if (prevInput != null && !contentTable.hasMouse() && !Vars.mobile){
+            input.panning = prevInput;
+            prevInput = null;
+        }
     }
 
     // updated so rarely because fast makes click on label impossible
@@ -47,53 +71,72 @@ Events.run(Trigger.update, () => {
     if (isRebuildNeeded()) {
         rebuildTable();
     }
-    
+
+    optionChecker = prevOptionChecker;
+    optionChecker = 0;
+    if (Core.settings.getBool("eui-ShowPlayerList", false)) optionChecker++;
+    if (Core.settings.getBool("eui-ShowUnitTable", false)) optionChecker++;
 
     unitTable.clearChildren()
-    for (let [, teamInfo] of unitsValueTop) {
-        const team = teamInfo.team;
-        const teamUnits = teamInfo.units;
+    if (Core.settings.getBool("eui-ShowUnitTable", false) && showUnitsList) {
+        for (let [, teamInfo] of unitsValueTop) {
+            const team = teamInfo.team;
+            const teamUnits = teamInfo.units;
 
-        for (let [, unitInfo] of Object.entries(teamUnits)) {
-            const entity = unitInfo.entity;
-            const amount = unitInfo.amount;
-            unitTable.label(() => {
-                return getTeamColor(team) + amount + '[white]';
-            }).left();
-            const image = unitTable.image(entity.type.icon(Cicon.small)).left().padRight(5).padBottom(2).maxSize(24).get();
-            image.hovered(() => {
-                hoveredEntity = entity;
-            });
-            image.clicked(() => {
-                if (!holdedEntity || !isSameEntity(holdedEntity, entity)) {
+            for (let [, unitInfo] of Object.entries(teamUnits)) {
+                const entity = unitInfo.entity;
+                const amount = unitInfo.amount;
+                unitTable.label(() => {
+                    return getTeamColor(team) + amount + '[white]';
+                }).left();
+                const image = unitTable.image(entity.type.icon(Cicon.small)).left().padRight(5).padBottom(2).maxSize(24).get();
+                image.hovered(() => {
+                    hoveredEntity = entity;
+                });
+                image.clicked(() => {
+                    if (!holdedEntity || !isSameEntity(holdedEntity, entity)) {
+                        holdedEntity = entity;
+                    } else {
+                        holdedEntity = null;
+                    }
+                });
+
+                if (holdedEntity && holdedEntity.dead && isSameEntity(holdedEntity, entity)) {
                     holdedEntity = entity;
-                } else {
-                    holdedEntity = null;
                 }
-            });
-
-            if (holdedEntity && holdedEntity.dead && isSameEntity(holdedEntity, entity)) {
-                holdedEntity = entity;
-            }
-        };
-        unitTable.row();
+            };
+            unitTable.row();
+        }
     }
 
     playerTable.clearChildren()
-    if (!Core.settings.getBool("eui-ShowPlayerList", false) || hidePlayerList) return;
-    Groups.unit.each((unit) => {
-        let player = unit.player
-        if (player && !(player == Vars.player) ) {
-            let playerName = unit.player.name
-            const image = playerTable.image(unit.type.icon(Cicon.small)).left().padRight(5).padBottom(2).maxSize(24).get();
-            image.hovered(() => {
-                hoveredPlayer = player;
-            });
-            const text = playerTable.label(() => { return getTeamColor(player) + playerName + '[white]' } ).left().touchable(Touchable.enabled);
+    if ((Core.settings.getBool("eui-ShowPlayerList", false) && showPlayerList)) {
 
-        }
-        playerTable.row();
-    });
+        Groups.unit.each((unit) => {
+            let player = unit.player
+            if (!player || (player == Vars.player) ) return;
+            let playerName = player.name
+            hoveredPlayer = null
+            const image = playerTable.image(unit.type.icon(Cicon.small)).left().padRight(6).padBottom(2).maxSize(24).get();
+
+            if(!compactPlayerList){
+                const text = playerTable.label(() => { return getTeamColor(player) + playerName + '[white]' } ).left().touchable(Touchable.enabled);
+                playerTable.row();
+            }else{
+                let playerCount
+                if (playerCount = maxToDisplay){
+                    playerCount++;
+                }else{
+                    playerCount = 0;
+                    playerTable.row();
+                }
+            }
+            image.hovered(() => {
+                hoveredPlayer = unit;
+            });
+
+        });
+    }
 
 
 });
@@ -131,37 +174,6 @@ Events.run(Trigger.draw, () => {
         });
     }
 
-    if (Core.settings.getBool("eui-ShowPlayerList", true)) {
-        let player
-        if (hoveredPlayer && !hoveredPlayer.dead) {
-            player = hoveredPlayer;
-        } else {return}
-
-        //Vars.player.set(player)
-        Core.camera.position.set(player);
-
-        Draw.draw(Layer.overlayUI+0.01, () => {
-            let x;
-            let y;
-
-            if (Vars.player.unit() instanceof NullUnit) {
-                const position = Core.camera.position;
-                x = position.x;
-                y = position.y;
-            } else {
-                const unit = Vars.player.unit();
-                x = unit.x;
-                y = unit.y;
-            }
-            const distance = Mathf.dst(x, y, hoveredPlayer.x, hoveredPlayer.y);
-            const text = Math.round(distance / 8).toString();
-
-            Draw.color(hoveredPlayer.team.color);
-            Lines.line(x, y, hoveredPlayer.x, hoveredPlayer.y);
-            if (distance > 80) barBuilder.drawLabel(text, x, y + 20, Color.white, true);
-        });
-    }
-
 })
 
 Events.on(EventType.WorldLoadEvent, () => {
@@ -183,39 +195,61 @@ function clearTable() {
 function buildTable() {
     const buttonSize = 35;
 
-    let unitTableButtons = contentTable.table().top().left().margin(3).get();
+    let cuiTableButtons = contentTable.table().top().left().margin(3).get();
+    cuiTableButtons.clearChildren();
+    //Global buttons
+    cuiTableButtons.button(Icon.play, Styles.defaulti, () => {
+        unitsUiVisible = !unitsUiVisible;
+    }).width(buttonSize).height(buttonSize).pad(0).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
+    let imageButton
 
-        unitTableButtons.button(Icon.play, Styles.defaulti, () => {
-            unitsUiVisible = !unitsUiVisible;
-        }).width(buttonSize).height(buttonSize).pad(1).name("show").tooltip(Core.bundle.get("units-table.button.hide.tooltip"));
+    if (Core.settings.getBool("eui-ShowUnitTable", true)) {//Units list buttons
+        imageButton = cuiTableButtons.button(new TextureRegionDrawable(Icon.unitsSmall), Styles.defaulti, () => {
+            showUnitsList = !showUnitsList;
+        }).update(b => b.setChecked(showUnitsList)).width(buttonSize).height(buttonSize).pad(1).name("hide-units").tooltip(Core.bundle.get("units-table.button.hide-units.tooltip")).get();
+        imageButton.visibility = () => unitsUiVisible;
+        imageButton.resizeImage(buttonSize*0.6);
 
-        let imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, () => {
+        imageButton = cuiTableButtons.button(new TextureRegionDrawable(Icon.adminSmall), Styles.defaulti, () => {
             hideCoreUnits = !hideCoreUnits;
         }).update(b => b.setChecked(hideCoreUnits)).width(buttonSize).height(buttonSize).pad(1).name("core-units").tooltip(Core.bundle.get("units-table.button.core-units.tooltip")).get();
         imageButton.visibility = () => unitsUiVisible;
         imageButton.resizeImage(buttonSize*0.6);
+    }
 
-        imageButton = unitTableButtons.button(new TextureRegionDrawable(Icon.eye), Styles.defaulti, () => {
-            hidePlayerList = !hidePlayerList;
-        }).update(b => b.setChecked(hidePlayerList)).width(buttonSize).height(buttonSize).pad(1).name("support-units").tooltip(Core.bundle.get("units-table.button.compact-player-list.tooltip")).get();
-        imageButton.visibility = () => (Core.settings.getBool("eui-ShowPlayerList", true));
+    if (Core.settings.getBool("eui-ShowPlayerList", true)) {//Player list buttons
+        imageButton = cuiTableButtons.button(new TextureRegionDrawable(Icon.players), Styles.defaulti, () => {
+            showPlayerList = !showPlayerList;
+        }).update(b => b.setChecked(showPlayerList)).width(buttonSize).height(buttonSize).pad(1).name("hide-player-list").tooltip(Core.bundle.get("units-table.button.hide-player-list.tooltip")).get();
+        imageButton.visibility = () => unitsUiVisible;
         imageButton.resizeImage(buttonSize*0.6);
 
+        imageButton = cuiTableButtons.button(new TextureRegionDrawable(Icon.host), Styles.defaulti, () => {
+            compactPlayerList = !compactPlayerList;
+        }).update(b => b.setChecked(showPlayerList)).width(buttonSize).height(buttonSize).pad(1).name("hide-player-list").tooltip(Core.bundle.get("units-table.button.compact-player-list.tooltip")).get();
+        imageButton.visibility = () => unitsUiVisible;
+        imageButton.resizeImage(buttonSize*0.6);
+
+    }
     contentTable.row();
 
-    unitTable = contentTable.table().margin(3).get();
-    unitTable.visibility = () => unitsUiVisible;
+    if(showUnitsList){
+        unitTable = contentTable.table().margin(3).get();
+        unitTable.visibility = () => unitsUiVisible;
+        contentTable.row();
+    }
 
-    contentTable.row();
-
-    playerTable = contentTable.table().margin(3).get();
-    playerTable.visibility = () => unitsUiVisible;
+    if(showPlayerList){
+        playerTable = contentTable.table().margin(3).get();
+        playerTable.visibility = () => unitsUiVisible;
+    }
 
     isBuilded = true;
 }
 
 function isRebuildNeeded() {
     if (!isBuilded) return true;
+    if (optionChecker != prevOptionChecker) return true;
     return false;
 }
 
@@ -231,7 +265,7 @@ function setMarker() {
         }
     }).name("unit-table").top().left().marginBottom(2).marginTop(2);
     contentTable = contentTable.get();
-    contentTable.visibility = () => isBuilded && Boolean(amountToDisplay); // Boolean really neccessary
+    contentTable.visibility = () => isBuilded && (Core.settings.getBool("eui-ShowPlayerList", true) || Core.settings.getBool("eui-ShowUnitTable", true));
 }
 
 function isSameEntity(entity1, entity2) {

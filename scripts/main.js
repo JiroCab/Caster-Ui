@@ -9,6 +9,7 @@ const modules = [
 
     "ui/other/settings-ui",
     "ui/other/resource-rate-ui",
+    "ui/other/power-ui",
 
     "ui/blocks/block-info-ui",
     "ui/blocks/progress-bar",
