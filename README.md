@@ -6,16 +6,15 @@
 # Features 
 Everything can be Toggles on or off From "Setting > Game > Caster-Ui"
 
-### - Unit Counter 
+### - Unit counter (mostly unchanged from extended-UI)
 - Displays up to 6 unit types that the best 8 team on the map has, sorted by relative value.
+- Hover on a unit sprite in the table to see get how far it's from your current unit.
+- Tap on unit sprite on table to track this type of unit.
+### - Player tracker
+- Displays all players on the server
+- Hover on Player's unit sprite to spectate them
 
-Also have some additional features:
-1. Hover on a unit sprite in the table to see get how far it's from your core ship.
-2. Tap on unit sprite on table to track this type of unit.
-
-Note: Same as extended-UI but no Support Units Toggles
-
-![units-table](https://cdn.discordapp.com/attachments/606977691757051920/950541449554976788/unknown.png)
+![player and unit table](https://user-images.githubusercontent.com/57391931/188985548-624af3a4-959a-4416-9a60-c1e5f2154f47.PNG)
 
 ### - Core Lost notifications
 - Only supports the 5 Main teams
