@@ -12,7 +12,7 @@ Everything can be Toggles on or off From "Setting > Game > Caster-Ui"
 - Tap on unit sprite on table to track this type of unit.
 ### - Player tracker
 - Displays all players on the server
-- Hover on Player's unit sprite to spectate them
+- Tap on a player's name or sprite to spectate them
 
 ![player and unit table](https://user-images.githubusercontent.com/57391931/188985548-624af3a4-959a-4416-9a60-c1e5f2154f47.PNG)
 
@@ -47,6 +47,12 @@ Composed of three parts, which can be individually turned off:
 - Shows how much resources your current produces - Best paired with a team changer mod to look at other teams' income
 
 ![rate](https://cdn.discordapp.com/attachments/606977691757051920/989816706987876432/EpicPen_jJO6PgFNf1.png)
+
+### Power bar *
+Shows global power status. Also makes warning about net separating
+
+![power-bar](https://cdn.discordapp.com/attachments/606977691757051920/950107054088015952/unknown.png)
+![power-warning](https://cdn.discordapp.com/attachments/606977691757051920/950106865902182480/unknown.png)
 
 ### - logic Tracker *
 - TODO:decide to keep and polish or discard

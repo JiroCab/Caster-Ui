@@ -13,12 +13,12 @@ let compactPlayerList = false;
 let isBuilded = false;
 let holdedEntity = null;
 let hoveredEntity = null;
-let hoveredPlayer = null;
+let trackedPlayer = null;
 let amountToDisplay = 0;
 let updateTimer = Date.now();
 let optionChecker = 0;
 let prevOptionChecker = 0;
-let prevInput = null;
+let prevUserPos
 
 let overlayMarker;
 let contentTable;
@@ -31,33 +31,26 @@ Events.run(Trigger.update, () => {
             clearTable();
         }
         hoveredEntity = null;
-        hoveredPlayer = null;
         return;
     }
 
     if (hoveredEntity && !contentTable.hasMouse()) hoveredEntity = null;
-    if (hoveredPlayer && !contentTable.hasMouse()) hoveredPlayer = null;
-
     if (!overlayMarker) {
         setMarker();
     }
 
-    if (Core.settings.getBool("eui-ShowPlayerList", false)) {
-        let player
+    if (Core.settings.getBool("eui-ShowPlayerList", false) && trackedPlayer) {
         let input = Vars.control.input;
+        if(!Vars.mobile){input.panning = true;}
 
-        if (hoveredPlayer && !hoveredPlayer.dead){
-            player = hoveredPlayer;
-            if (!prevInput && !Vars.mobile){
-                prevInput = input.panning;
-                input.panning = true;
-            }
-            Core.camera.position.set(player);
-        }
-        if (prevInput != null && !contentTable.hasMouse() && !Vars.mobile){
-            input.panning = prevInput;
-            prevInput = null;
-        }
+        let cameraFloat = 0.085
+        if (!Core.settings.getBool("smoothcamera")){ cameraFloat = 1}
+
+        if (trackedPlayer.unit()){
+            //workaround for when in multiplayer, sometimes respawning puts you in 0,0 during the animation before moving your unit
+            if (trackedPlayer.x != 0 && trackedPlayer.y != 0) {Core.camera.position.lerpDelta(trackedPlayer, cameraFloat)
+            } else {Core.camera.position.lerpDelta(trackedPlayer.bestCore(), cameraFloat)}
+        } else {Core.camera.position.set(trackedPlayer.x, trackedPlayer.y)}
     }
 
     // updated so rarely because fast makes click on label impossible
@@ -74,11 +67,11 @@ Events.run(Trigger.update, () => {
 
     optionChecker = prevOptionChecker;
     optionChecker = 0;
-    if (Core.settings.getBool("eui-ShowPlayerList", false)) optionChecker++;
-    if (Core.settings.getBool("eui-ShowUnitTable", false)) optionChecker++;
+    if (Core.settings.getBool("eui-ShowPlayerList", true)) optionChecker++;
+    if (Core.settings.getBool("eui-ShowUnitTable", true)) optionChecker++;
 
     unitTable.clearChildren()
-    if (Core.settings.getBool("eui-ShowUnitTable", false) && showUnitsList) {
+    if(Core.settings.getBool("eui-ShowUnitTable", true)){
         for (let [, teamInfo] of unitsValueTop) {
             const team = teamInfo.team;
             const teamUnits = teamInfo.units;
@@ -110,74 +103,72 @@ Events.run(Trigger.update, () => {
     }
 
     playerTable.clearChildren()
-    if ((Core.settings.getBool("eui-ShowPlayerList", false) && showPlayerList)) {
-
-        Groups.unit.each((unit) => {
-            let player = unit.player
-            if (!player || (player == Vars.player) ) return;
-            let playerName = player.name
-            hoveredPlayer = null
-            const image = playerTable.image(unit.type.icon(Cicon.small)).left().padRight(6).padBottom(2).maxSize(24).get();
-
-            if(!compactPlayerList){
-                const text = playerTable.label(() => { return getTeamColor(player) + playerName + '[white]' } ).left().touchable(Touchable.enabled);
-                playerTable.row();
-            }else{
-                let playerCount
-                if (playerCount = maxToDisplay){
-                    playerCount++;
-                }else{
-                    playerCount = 0;
-                    playerTable.row();
-                }
-            }
-            image.hovered(() => {
-                hoveredPlayer = unit;
+    let playerCount = 0
+    if (!Core.settings.getBool("eui-ShowPlayerList", true)) return;
+    Groups.player.each((player) => {
+        if (player == Vars.player) return;
+        const image = playerTable.image(player.icon()).left().padRight(6).padBottom(3).maxSize(27).get();
+        let text
+        if(!compactPlayerList){
+            text = playerTable.label(() => {return getTeamColor(player) + player.name + '[white]' } ).left().with(l => {
+                l.clicked(() => {setTrackedPlayer(player)})
             });
+            playerTable.row();
+        }else{
+            let playerCount
+            if (playerCount = maxToDisplay){
+                playerCount++;
+            }else{
+                playerCount = 0;
+                playerTable.row();
+            }
+        }
 
+        image.clicked(() => {
+            setTrackedPlayer(player)
         });
-    }
 
+    });
 
 });
 
 Events.run(Trigger.draw, () => {
-    if (Core.settings.getBool("eui-ShowUnitTable", false)) {
-        let entity;
-        if (hoveredEntity && !hoveredEntity.dead) {
-            entity = hoveredEntity;
-        } else if (holdedEntity && !holdedEntity.dead) {
-            entity = holdedEntity;
-        } else {
-            return
-        }
+    if (!Core.settings.getBool("eui-ShowUnitTable", false)) return;
 
-        Draw.draw(Layer.overlayUI+0.01, () => {
-            let x;
-            let y;
-
-            if (Vars.player.unit() instanceof NullUnit) {
-                const position = Core.camera.position;
-                x = position.x;
-                y = position.y;
-            } else {
-                const unit = Vars.player.unit();
-                x = unit.x;
-                y = unit.y;
-            }
-            const distance = Mathf.dst(x, y, entity.x, entity.y);
-            const text = Math.round(distance / 8).toString();
-
-            Draw.color(entity.team.color);
-            Lines.line(x, y, entity.x, entity.y);
-            if (distance > 80) barBuilder.drawLabel(text, x, y + 20, Color.white, true);
-        });
+    let entity;
+    if (hoveredEntity && !hoveredEntity.dead) {
+        entity = hoveredEntity;
+    } else if (holdedEntity && !holdedEntity.dead) {
+        entity = holdedEntity;
+    } else {
+        return
     }
 
+    Draw.draw(Layer.overlayUI+0.01, () => {
+        let x;
+        let y;
+
+        if (Vars.player.unit() instanceof NullUnit) {
+            const position = Core.camera.position;
+            x = position.x;
+            y = position.y;
+        } else {
+            const unit = Vars.player.unit();
+            x = unit.x;
+            y = unit.y;
+        }
+        const distance = Mathf.dst(x, y, entity.x, entity.y);
+        const text = Math.round(distance / 8).toString();
+
+        Draw.color(entity.team.color);
+        Lines.line(x, y, entity.x, entity.y);
+        if (distance > 80) barBuilder.drawLabel(text, x, y + 20, Color.white, true);
+    });
 })
 
 Events.on(EventType.WorldLoadEvent, () => {
     holdedEntity = null;
+    trackedPlayer = null;
 });
 
 function rebuildTable() {
@@ -275,4 +266,8 @@ function isSameEntity(entity1, entity2) {
 
 function getTeamColor(team) {
     return "[#"+team.color.toString()+"]";
+}
+function setTrackedPlayer(player) {
+    if(trackedPlayer == null || trackedPlayer != player){trackedPlayer = player}
+    else {trackedPlayer = null};
 }
